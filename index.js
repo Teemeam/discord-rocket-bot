@@ -7,7 +7,7 @@ const giphyRandom = require('giphy-random');
 
 /* ------ Init bot ------ */
 client.once('ready', () => {
-	console.log('Ready!');
+  console.log('Ready!');
 });
 
 /* ------ On message ------ */
