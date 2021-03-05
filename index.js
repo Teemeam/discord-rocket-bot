@@ -1,21 +1,54 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token } = require('./config.json');
+const { prefix, token, api_key } = require('./config.json');
 
-const random_imgs = [
-  'https://media.giphy.com/media/e7PqS0VCIsmi6LKkY4/giphy.gif',
-  'https://media.giphy.com/media/XbaBIyuAoyGePuQeP2/giphy.gif',
-  'https://media.giphy.com/media/l378lpLXJ9R5JY13O/giphy.gif',
-]
+/* ------ Components ------ */
+const giphyRandom = require('giphy-random');
 
+/* ------ Init bot ------ */
 client.once('ready', () => {
 	console.log('Ready!');
 });
 
+/* ------ On message ------ */
 client.on('message', message => {
-	if (message.content === `${ prefix }ping`) {
-		message.channel.send(random_imgs[Math.floor(Math.random() * random_imgs.length)]);
-	}
+  if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+  const author = message.author.username;
+  const args = message.content.slice(prefix.length).trim().split(/ +/);
+	const command = args.shift().toLowerCase();
+
+  /* If user gives command and args  */
+	if (command === 'rockets' && args.length > 0) {
+    if (args[0] === 'info') {
+      message.channel.send('Type !rockets and some tag.');
+    } else {
+      (async () => {
+        const { data } = await giphyRandom(api_key, {
+          tag: args[0]
+        });
+
+        /* If data found */
+        if (data.url) {
+          message.reply('here is your ' + args[0] + '.');
+          message.channel.send(data.url);
+        } else {
+          message.channel.send('Got nothing.');
+        }
+      })();
+    }
+  } 
+  
+  /* If user gives command but no args  */
+  else if (command === 'rockets' && args.length === 0) {
+    (async () => {
+      const { data } = await giphyRandom(api_key, {
+        tag: 'spacex'
+      });
+      message.channel.send(data.url);
+    })();
+  }
 });
 
+/* ------ Pass Discord token ------ */
 client.login(token);
