@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token, api_key } = require('./config.json');
+const { prefix, token, channel_id, api_key } = require('./config.json');
 
 /* ------ Components ------ */
 const giphyRandom = require('giphy-random');
@@ -8,6 +8,12 @@ const giphyRandom = require('giphy-random');
 /* ------ Init bot ------ */
 client.once('ready', () => {
   console.log('Ready!');
+  /*
+  client.channels.fetch(channel_id)
+    .then(channel => {
+      channel.send('Ready for your service!');
+    })
+  */
 });
 
 /* ------ On message ------ */
