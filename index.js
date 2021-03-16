@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token, channel_id, api_key } = require('./config.json');
+import { prefix, token, channel_id, api_key } from './config.json';
 
 /* ------ Components ------ */
 const giphyRandom = require('giphy-random');
